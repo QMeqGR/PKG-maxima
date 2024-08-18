@@ -1,0 +1,6 @@
+display2d:false$
+load(PKG)$
+myfunc(1);/*thenumbersoftheinputpromptsdon'tmatterhere*/
+myfunc(2);
+myfunc2(z);
+myfunc2(3);

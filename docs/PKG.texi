@@ -1,0 +1,94 @@
+\input texinfo   @c -*-texinfo-*-
+
+@setfilename PKG.info
+@settitle Package PKG
+
+@ifinfo
+@macro var {expr}
+<\expr\>
+@end macro
+@end ifinfo
+
+@dircategory Mathematics/Maxima
+@direntry
+* Package PKG: (maxima) Maxima share package PKG
+@end direntry
+
+@menu
+* Introduction to package PKG::
+* Functions and Variables for PKG::
+@end menu
+@node Top, Introduction to package PKG, (dir), (dir)
+@top
+
+@menu
+* Introduction to package PKG::
+* Functions and Variables for PKG::
+
+@detailmenu
+ --- The Detailed Node Listing ---
+
+* Introduction to package PKG::
+* Functions and Variables for PKG::
+
+@end detailmenu
+@end menu
+
+
+@chapter Package PKG
+
+@node Introduction to package PKG, Functions and Variables for PKG, Top, Top
+@section Introduction to package PKG
+
+The @code{PKG} package provides...
+
+@node Functions and Variables for PKG, , Introduction to package PKG, Top
+@section Functions and Variables for PKG
+
+@defvr {Variable} myvar
+Description of @code{myvar}.
+@end defvr
+
+@anchor{ket}
+@deffn {Function} myfunc (@code{x})
+Description of @code{myfunc} that takes inputs @code{x} and ...
+@end deffn
+
+@example
+@group
+(%i4) myfunc(1);
+(%o4)                               cos(1)
+(%i5) myfunc(2);
+(%o5)                               cos(2)
+@end group
+@end example
+
+@anchor{myfunc2} /* if you want to refer to this location later in your docs */
+@deffn {Function} myfunc2 (@code{y})
+Description, etc.
+@end deffn
+
+@example
+@group
+(%i4) myfunc2(z);
+(%o4)                               sin(z)
+(%i5) myfunc2(3);
+(%o5)                               sin(3)
+@end group
+@end example
+
+@subsection SubsectionName
+
+blah blah blah
+
+@subsection SubsectionName
+
+blah blah blah
+
+
+@node Function and Variable Index, , Top, Top
+@appendix Function and Variable index
+@printindex fn
+@printindex vr
+
+@bye

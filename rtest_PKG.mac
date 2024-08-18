@@ -1,0 +1,17 @@
+batch("examples.txt");
+display2d:false;
+load(PKG);
+myfunc(1);
+cos(1) $
+
+myfunc(2);
+cos(2) $
+
+myfunc2(z);
+sin(z) $
+
+myfunc2(3);
+sin(3) $
+
+"/home/ehm/math/Maxima/share/ehm/PKG-maxima/docs/examples.txt" $
+
