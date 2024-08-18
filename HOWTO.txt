@@ -3,6 +3,8 @@
 ########################################################
 
 These instructions assume you have downloaded the package template.
+If you use Windows or MacOS, please see additional instructions toward
+the bottom.
 
 This template holds skeleton documentation files for your package as
 well as skeleton .mac and .lisp files for your source code.
@@ -119,3 +121,25 @@ package when you issue 'load(PKG);'?
 
 2. Did everything build correctly? You can manually check the
 *index.lisp index files, and the README.txt file.
+
+===============================================================
+===============================================================
+   WINDOWS further instructions
+===============================================================
+===============================================================
+* THIS SECTION IS UNFINISHED *
+Install necessary tools using
+1. Cygwin
+2. WSL
+
+
+
+===============================================================
+===============================================================
+   MacOS further instructions
+===============================================================
+===============================================================
+* THIS SECTION IS UNFINISHED *
+Install necessary tools using
+1. fink
+2. brew
