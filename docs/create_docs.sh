@@ -1,10 +1,53 @@
 #!/bin/bash
 
+# defaults
 debug=0;
+help=0;
 
-packname=$(cat ../CONFIG | gawk -F'=' '($1=="package-name"){print $2}')
+# packname=$(cat ../CONFIG | gawk -F'=' '($1=="package-name"){print $2}')
+# get package name
+n=$(ls *.texi | wc -l | awk '{print $1}');
+if [ $n -gt 1 ]; then
+    echo "Found more than one .texi file. There should be only one PKG.texi file."
+    if [ -e regen.texi ]; then
+	echo "Remove the regen.texi file before running create_docs.sh."
+    fi
+    exit
+else
+    texifile=$(ls *.texi);
+    packname=${texifile%%.texi}
+    echo "Using packname= "$packname;
+fi
+
 MAXIMA_ROOT=$(cat ../CONFIG | gawk -F'=' '($1=="max_src"){print $2}')
 buildindex=$MAXIMA_ROOT/doc/info/build_index.pl
+
+###############################################
+declare SWITCH
+while getopts "dhm:" SWITCH; do
+    case $SWITCH in
+	d) debug=1 ;;
+	h) help=1 ;;
+	m) maxima_impl=$OPTARG; useCONFIG=0 ;;
+    esac
+done
+
+if [ $# -eq 0 ] || [ $help -eq 1 ]; then
+    echo
+    echo "#######################"
+    echo "#   create_docs.sh    #"
+    echo "#######################"
+    echo
+    echo "use: create_docs.sh  [options]"
+    echo "     (options with a * require an argument)"
+    echo
+    echo "    -d --- debug (leaves temp files, default is OFF)"
+    echo "    -h --- help (show this help)"
+    echo "    -m -*- specify maxima implementation, e.g. /path/to/maxima"
+    echo
+    exit
+fi
+
 
 echo "### Running makeinfo..."
 makeinfo $packname.texi;
