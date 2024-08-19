@@ -99,9 +99,9 @@ fi
 echo "display2d:false$" > examples.txt
 echo "load($packname)\$" >> examples.txt
 cat $packname.texi | grep "(%i" | \
-    gawk '(NF>1){for(i=2;i<NF+1;i++){printf("%s",$i)};printf("\n")}' \
+    awk '(NF>1){for(i=2;i<NF+1;i++){printf("%s",$i)};printf("\n")}' \
 	 >> examples.txt;
 
 $MAXIMA -q -b examples.txt > rtest.tmp.out;
 
-cat rtest.tmp.out | gawk '($1~/%i/){for(i=2;i<NF+1;i++){printf("%s",$i)};printf(";\n");}($1~/%o/){for(i=2;i<NF+1;i++){printf("%s ",$i)};printf("$\n\n");}' > ../rtest_$packname.mac;
+cat rtest.tmp.out | awk '($1~/%i/){for(i=2;i<NF+1;i++){printf("%s",$i)};printf(";\n");}($1~/%o/){for(i=2;i<NF+1;i++){printf("%s ",$i)};printf("$\n\n");}' > ../rtest_$packname.mac;
