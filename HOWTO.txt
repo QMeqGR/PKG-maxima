@@ -11,9 +11,8 @@ well as skeleton .mac and .lisp files for your source code.
 
 The top-level directory will be named after your package, say "PKG".
 Inside this directory you will find the source code template files
-PKG.mac and PKG.lisp, as well as a file called CONFIG that will set
-some parameters. In the top-level template directory you will find a
-doc/ directory that will contain your PKG.info doc file and two
+PKG.mac and PKG.lisp. In the top-level template directory you will
+find a doc/ directory that will contain your PKG.info doc file and two
 scripts that will help you build your documentation.
 
 For your package documentation to be visible once you 'load()' the
@@ -28,16 +27,7 @@ source.
 Steps:
 
 1. Name your package. For this howto let's assume your package name is
-"PKG". Edit the file named CONFIG in the top level directory to
-contain your package name, and also point to the location of your
-Maxima source code install. You will set the variables 'package-name'
-and 'max_src' in CONFIG. You must do this for the scripts to
-work. Your CONFIG file should look like (no spaces are allowed in your
-package name, use an underscore or dash if you must):
-
-$ cat CONFIG
-package-name=PKG
-max_src=/home/packages/SOURCE/maxima-code
+"PKG".
 
 2. Edit the LICENSE file to whatever license you like. The template
 contains a GPL-v3 license.
@@ -66,8 +56,11 @@ followed exactly for the scripts to work.
 @end group
 @end example
 
+NOTE:
 If your example uses the output of one command for the next input
-command, then both commands MUST be in the same '@group'.
+command, then both commands MUST be in the same '@group'. Also,
+a single example command cannot span multiple lines, it must
+fit on a single line.
 
 Important note: You do *not* have to cut and paste output from a
 Maxima session into your PKG.texi file. It is fine for your .texi file
@@ -96,7 +89,7 @@ file!!
 5. Now you are ready to generate the doc files. In the PKG-maxima/doc/
 directory issue:
 
-$ ./create_docs.sh
+$ ./create_docs.sh -M /path/to/maxima/source-code
 
 This should create PKG.info, PKG.pdf, a PKG_html/ directory containing
 html-related doc files, a text file ../README.txt in the top level

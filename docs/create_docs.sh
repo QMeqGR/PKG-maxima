@@ -3,19 +3,20 @@
 # defaults
 debug=0;
 help=0;
-use_CONFIG=0;
-default_maxima=$(which maxima);
-default_maxima_root=${default_maxima%/*};
-MAXIMA_ROOT=$default_maxima_root;
+MAXIMA=maxima;
+MAXIMA_SRC=""
+packname=""
 
 ###############################################
 ###############################################
 declare SWITCH
-while getopts "dhm:" SWITCH; do
+while getopts "Dhm:M:p:" SWITCH; do
     case $SWITCH in
-	d) debug=1 ;;
+	D) debug=1 ;;
 	h) help=1 ;;
-	m) maxima_impl=$OPTARG; use_CONFIG=0 ;;
+	m) MAXIMA=$OPTARG;;
+	M) MAXIMA_SRC=$OPTARG;;
+	p) packname=$OPTARG;;
     esac
 done
 
@@ -25,13 +26,17 @@ if [ $# -eq 0 ] || [ $help -eq 1 ]; then
     echo "#   create_docs.sh    #"
     echo "#######################"
     echo
-    echo "use: create_docs.sh  [options]"
+    echo "use: create_docs.sh [-hDm:M:p:]"
     echo "     (options with a * require an argument)"
     echo
-    echo "    -d --- debug (leaves temp files, default is OFF)"
+    echo "    -D --- debug (leaves temp files, default is OFF)"
     echo "    -h --- help (show this help)"
-    echo "    -m -*- specify maxima implementation, e.g. /path/to/maxima"
+    echo "    -m -*- set maxima executable (default maxima)"
+    echo "    -M -*- path to maxima source directory"
+    echo "    -p -*- set package name (default off, automatically determined)"
     echo
+    echo " The maxima source directory should be something like:"
+    echo " /home/packages/SOURCE/maxima-code/ if you cloned from SourceForge"
     exit
 fi
 
@@ -43,81 +48,60 @@ if [ $n -gt 1 ]; then
 	echo "Remove the regen.texi file before running create_docs.sh."
     fi
     exit
-else
+elif [ "$packname" == "" ]; then
     texifile=$(ls *.texi);
     packname=${texifile%.texi}
-    echo "Using packname= "$packname;
-    echo "      default_maxima= "$default_maxima
-    echo "      default_maxima_root= "$default_maxima_root
+    echo "Found packname= "$packname;
 fi
 
-if [ $use_CONFIG -eq 1 ]; then
-    packname=$(cat ../CONFIG | gawk -F'=' '($1=="package-name"){print $2}')
-    MAXIMA_ROOT=$(cat ../CONFIG | gawk -F'=' '($1=="max_src"){print $2}')
-
+if [ ! -f "$packname.texi" ]; then
+    echo "$packname.texi is not a file"
+    exit 2
 fi
-buildindex=$MAXIMA_ROOT/doc/info/build_index.pl
+
+buildindex=$MAXIMA_SRC/doc/info/build_index.pl
+buildindex_lsp=$MAXIMA_SRC/doc/info/build-html-index.lisp
+
+if [ ! -e $buildindex ]; then
+    echo "Can't find build_index.pl using"
+    echo "MAXIMA_SRC="$MAXIMA_SRC
+    exit 2
+fi
 
 
 #################################################################
 #################################################################
-echo "### Running makeinfo..."
 makeinfo $packname.texi;
-echo 
-echo "### Running makeinfo --pdf ..."
 makeinfo --pdf $packname.texi;
-echo
-echo "### Running makeinfo --html ..".
 makeinfo --split=chapter --no-node-files --html \
 	 -c OUTPUT_ENCODING_NAME=UTF-8 -e 10000 $packname.texi;
-echo
-echo "### Running makeinfo --plaintext ..."
 makeinfo --plaintext $packname.texi > ../README.txt;
-echo
-echo "### Building .info index file..."
 # build the .info index
 $buildindex $packname.info > $packname-index.lisp;
 
-echo
 # build the html index
-echo "### Building .info html index file..."
-maxima --no-init --no-verify-html-index  \
-       --preload=$MAXIMA_ROOT/doc/info/build-html-index.lisp \
-       --batch-string='build_and_dump_html_index("./'"${packname}"'_html/*.html", output_file="package-index-html.lisp",truenamep=true);';
+DIR="${packname}"'_html/*.html'
+OUTPUT="${packname}"-index-html.lisp
+BATCH=`echo build_and_dump_html_index\(\"$DIR\", output_file=\"$OUTPUT\", truenamep=true\)\;`
 
-if [ -f "package-index-html.lisp" ]; then
-    echo
-    echo "### Creation of HTML docs successful."
-    mv -f package-index-html.lisp $packname-index-html.lisp;
-else
-    echo "### Warning: no maxima-index-html.lisp was created for html docs."
-fi
-
+$MAXIMA --no-init --no-verify-html-index  \
+       --preload=$buildindex_lsp \
+       --batch-string="$BATCH"
 
 # clean up temporary files from pdf creation
 if [ $debug -eq 0 ]; then
-    echo
-    echo "### Cleaning up..."
     rm $packname.aux $packname.fn $packname.fns $packname.log $packname.toc \
        $packname.vr $packname.vrs build-html-index.log 
 fi
 
 ####################################################
 ## Create test suite from examples in $packname.texi
-echo
-echo "#### creating examples.txt and the rtest file."
 echo "display2d:false$" > examples.txt
 echo "load($packname)\$" >> examples.txt
 cat $packname.texi | grep "(%i" | \
     gawk '(NF>1){for(i=2;i<NF+1;i++){printf("%s",$i)};printf("\n")}' \
 	 >> examples.txt;
 
-echo
-echo "#### Running maxima on tests..."
-maxima -q -b examples.txt > rtest.tmp.out;
+$MAXIMA -q -b examples.txt > rtest.tmp.out;
 
-echo
-echo "#### Constructing rtest file... the rtest file must be edited"
 cat rtest.tmp.out | gawk '($1~/%i/){for(i=2;i<NF+1;i++){printf("%s",$i)};printf(";\n");}($1~/%o/){for(i=2;i<NF+1;i++){printf("%s ",$i)};printf("$\n\n");}' > ../rtest_$packname.mac;
-
-
