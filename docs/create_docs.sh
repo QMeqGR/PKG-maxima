@@ -8,6 +8,33 @@ default_maxima=$(which maxima);
 default_maxima_root=${default_maxima%/*};
 MAXIMA_ROOT=$default_maxima_root;
 
+###############################################
+###############################################
+declare SWITCH
+while getopts "dhm:" SWITCH; do
+    case $SWITCH in
+	d) debug=1 ;;
+	h) help=1 ;;
+	m) maxima_impl=$OPTARG; use_CONFIG=0 ;;
+    esac
+done
+
+if [ $# -eq 0 ] || [ $help -eq 1 ]; then
+    echo
+    echo "#######################"
+    echo "#   create_docs.sh    #"
+    echo "#######################"
+    echo
+    echo "use: create_docs.sh  [options]"
+    echo "     (options with a * require an argument)"
+    echo
+    echo "    -d --- debug (leaves temp files, default is OFF)"
+    echo "    -h --- help (show this help)"
+    echo "    -m -*- specify maxima implementation, e.g. /path/to/maxima"
+    echo
+    exit
+fi
+
 # get package name
 n=$(ls *.texi | wc -l | awk '{print $1}');
 if [ $n -gt 1 ]; then
@@ -31,33 +58,9 @@ if [ $use_CONFIG -eq 1 ]; then
 fi
 buildindex=$MAXIMA_ROOT/doc/info/build_index.pl
 
-###############################################
-declare SWITCH
-while getopts "dhm:" SWITCH; do
-    case $SWITCH in
-	d) debug=1 ;;
-	h) help=1 ;;
-	m) maxima_impl=$OPTARG; useCONFIG=0 ;;
-    esac
-done
 
-if [ $# -eq 0 ] || [ $help -eq 1 ]; then
-    echo
-    echo "#######################"
-    echo "#   create_docs.sh    #"
-    echo "#######################"
-    echo
-    echo "use: create_docs.sh  [options]"
-    echo "     (options with a * require an argument)"
-    echo
-    echo "    -d --- debug (leaves temp files, default is OFF)"
-    echo "    -h --- help (show this help)"
-    echo "    -m -*- specify maxima implementation, e.g. /path/to/maxima"
-    echo
-    exit
-fi
-
-
+#################################################################
+#################################################################
 echo "### Running makeinfo..."
 makeinfo $packname.texi;
 echo 
