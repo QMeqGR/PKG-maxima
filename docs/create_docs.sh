@@ -3,8 +3,11 @@
 # defaults
 debug=0;
 help=0;
+use_CONFIG=0;
+default_maxima=$(which maxima);
+default_maxima_root=${default_maxima%/*};
+MAXIMA_ROOT=$default_maxima_root;
 
-# packname=$(cat ../CONFIG | gawk -F'=' '($1=="package-name"){print $2}')
 # get package name
 n=$(ls *.texi | wc -l | awk '{print $1}');
 if [ $n -gt 1 ]; then
@@ -15,11 +18,17 @@ if [ $n -gt 1 ]; then
     exit
 else
     texifile=$(ls *.texi);
-    packname=${texifile%%.texi}
+    packname=${texifile%.texi}
     echo "Using packname= "$packname;
+    echo "      default_maxima= "$default_maxima
+    echo "      default_maxima_root= "$default_maxima_root
 fi
 
-MAXIMA_ROOT=$(cat ../CONFIG | gawk -F'=' '($1=="max_src"){print $2}')
+if [ $use_CONFIG -eq 1 ]; then
+    packname=$(cat ../CONFIG | gawk -F'=' '($1=="package-name"){print $2}')
+    MAXIMA_ROOT=$(cat ../CONFIG | gawk -F'=' '($1=="max_src"){print $2}')
+
+fi
 buildindex=$MAXIMA_ROOT/doc/info/build_index.pl
 
 ###############################################
