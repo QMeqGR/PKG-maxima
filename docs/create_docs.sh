@@ -20,23 +20,18 @@ while getopts "Dhm:M:p:" SWITCH; do
     esac
 done
 
-if [ $# -eq 0 ] || [ $help -eq 1 ]; then
-    echo
-    echo "#######################"
-    echo "#   create_docs.sh    #"
-    echo "#######################"
-    echo
-    echo "use: create_docs.sh [-hDm:M:p:]"
-    echo "     (options with a * require an argument)"
-    echo
+if [ $help -eq 1 ]; then
+    echo "Usage:"
+    echo "create_docs.sh [-hD]  [-p package-name] [-m maxima] [-M maxima-src]"
+    echo 
     echo "    -D --- debug (leaves temp files, default is OFF)"
     echo "    -h --- help (show this help)"
-    echo "    -m -*- set maxima executable (default maxima)"
-    echo "    -M -*- path to maxima source directory"
-    echo "    -p -*- set package name (default off, automatically determined)"
+    echo "    -p --- set package name (default off, automatically determined)"
+    echo "    -m --- maxima executable (default maxima)"
+    echo "    -M --- maxima source root directory (automatically determined)"
+    echo "           (something like /home/src/maxima-code if you cloned from"
+    echo "            SourceForge, and if you build out-of-tree)"
     echo
-    echo " The maxima source directory should be something like:"
-    echo " /home/packages/SOURCE/maxima-code/ if you cloned from SourceForge"
     exit
 fi
 
@@ -57,6 +52,15 @@ fi
 if [ ! -f "$packname.texi" ]; then
     echo "$packname.texi is not a file"
     exit 2
+fi
+
+if [ "$MAXIMA_SRC" == "" ]; then
+    MAXIMA_SRC=$($MAXIMA -d | awk -F'=' '($1~/maxima-srcdir/){print $2}');
+fi
+
+if [ $debug -gt 0 ]; then
+    echo "MAXIMA="$MAXIMA
+    echo "MAXIMA_SRC="$MAXIMA_SRC
 fi
 
 buildindex=$MAXIMA_SRC/doc/info/build_index.pl
