@@ -69,6 +69,7 @@ buildindex_lsp=$MAXIMA_SRC/doc/info/build-html-index.lisp
 if [ ! -e $buildindex ]; then
     echo "Can't find build_index.pl using"
     echo "MAXIMA_SRC="$MAXIMA_SRC
+    echo "Try using -M switch to set src directory manually."
     exit 2
 fi
 
