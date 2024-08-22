@@ -72,6 +72,7 @@ if [ $debug -gt 0 ]; then echo "ngrps= "$ngrps; fi
 for i in $(seq 1 $ngrps); do
     echo "display2d_unicode:false$" > .tmp.grp.$i.mac
     echo "load($packname)$" >> .tmp.grp.$i.mac
+    echo "linenum:0$" >> .tmp.grp.$i.mac
     echo "extracting examples from group "$i;
     cat tmp.regen.1 | awk -v G="$i" --source \
       '($1~/grpcnt/ && $2==G){for(i=6;i<NF+1;i++){printf("%s ",$i);}printf("\n");}' >> .tmp.grp.$i.mac
@@ -79,7 +80,7 @@ for i in $(seq 1 $ngrps); do
     maxima -q --batch .tmp.grp.$i.mac > .tmp.grp.$i.tmp1
     # throw away the header and the last line
     nlines=$(wc -l .tmp.grp.$i.tmp1 | awk '{print $1}')
-    cat .tmp.grp.$i.tmp1 | awk -v N="$nlines" --source '(NR>6 && NR<N){print $0}' > .tmp.grp.$i.tmp2
+    cat .tmp.grp.$i.tmp1 | awk -v N="$nlines" --source '(NR>7 && NR<N){print $0}' > .tmp.grp.$i.tmp2
     # Now post process the output
     cat .tmp.grp.$i.tmp2 | awk '{if($1~/\(%i[1-9]/){printf("%s %s;\n",$1,$2)}else{print $0}}' > .tmp.grp.$i.out
 done

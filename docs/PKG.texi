@@ -56,10 +56,10 @@ Description of @code{myfunc} that takes inputs @code{x} and ...
 
 @example
 @group
-(%i4) myfunc(1);
-(%o4)                               cos(1)
-(%i5) myfunc(2);
-(%o5)                               cos(2)
+(%i1) myfunc(1);
+(%o1)                               cos(1)
+(%i2) myfunc(2);
+(%o2)                               cos(2)
 @end group
 @end example
 
@@ -70,10 +70,10 @@ Description, etc.
 
 @example
 @group
-(%i4) myfunc2(z);
-(%o4)                               sin(z)
-(%i5) myfunc2(3);
-(%o5)                               sin(3)
+(%i1) myfunc2(z);
+(%o1)                               sin(z)
+(%i2) myfunc2(3);
+(%o2)                               sin(3)
 @end group
 @end example
 
