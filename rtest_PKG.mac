@@ -1,6 +1,6 @@
-batch("examples.txt");
-display2d:false;
-load(PKG);
+(display2d:false,load(PKG),0);
+0 $
+
 myfunc(1);
 cos(1) $
 
@@ -12,6 +12,4 @@ sin(z) $
 
 myfunc2(3);
 sin(3) $
-
-"/home/ehm/math/Maxima/share/ehm/PKG-maxima/docs/examples.txt" $
 
