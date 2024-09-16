@@ -71,12 +71,12 @@ be generated automatically using the script file
 Once you are finished editing your PKG.texi file, you can generate all
 of the examples inline by running:
 
-$ ./regen_examples.sh PKG
+$ ./regen_examples.sh
 
-You must supply the package name with this command. The script will
-process the different 'groups' in PKG.texi and place the entire output
-of PKG.texi with the examples in "regen.texi". WARNING: Before you
-overwrite your original PKG.texi file --> YOU SHOULD DO! <--:
+The script will process the different 'groups' in PKG.texi and place
+the entire output of PKG.texi with the examples in
+"regen.texi". WARNING: Before you overwrite your original PKG.texi
+file --> YOU SHOULD DO! <--:
 
 $ diff PKG.texi regen.texi
 
@@ -97,9 +97,11 @@ PKG.info, PKG.pdf, a PKG_html/ directory containing html-related doc
 files, a text file ../README.txt in the top level directory, as well
 as some other index files.
 
-From the main PKG.texi file it will also generate a file
-../rtest_PKG.mac containing Maxima tests using the examples you have
-in your PKG.texi file.
+NOTE: From the main PKG.texi file the create_docs.sh script will also
+generate a file ../rtest_PKG.mac containing Maxima tests using the
+examples you have in your PKG.texi file. This automatically generated
+test file will most likely need to be curated; commands that generate
+multiple line output may be truncated, for example.
 
 =============================== Done.
 
