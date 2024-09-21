@@ -98,10 +98,10 @@ files, a text file ../README.txt in the top level directory, as well
 as some other index files.
 
 NOTE: From the main PKG.texi file the create_docs.sh script will also
-generate a file ../rtest_PKG.mac containing Maxima tests using the
+generate a file "rtest_PKG.mac" containing Maxima tests using the
 examples you have in your PKG.texi file. This automatically generated
-test file will most likely need to be curated; commands that generate
-multiple line output may be truncated, for example.
+test file will most likely need to be looked over manually and
+curated.
 
 =============================== Done.
 
@@ -126,8 +126,13 @@ package when you issue 'load(PKG);'?
 ===============================================================
 * THIS SECTION IS UNFINISHED *
 Install necessary tools using
-1. Cygwin
-2. WSL
+
+1. Cygwin. Install a Lisp implementation, and a terminal application
+along with BASH. If you have a Linux-like setup working and if you have
+installed Maxima from source, then this package template should work
+fine.
+
+2. WSL (Windows subsystem for Linux). 
 
 
 
@@ -137,6 +142,7 @@ Install necessary tools using
 ===============================================================
 ===============================================================
 * THIS SECTION IS UNFINISHED *
-Install necessary tools using
+Install necessary tools using either
 1. fink
 2. brew
+

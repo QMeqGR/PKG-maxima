@@ -1,5 +1,0 @@
-(display2d:false,load(PKG),0);
-myfunc(1);
-myfunc(2);
-myfunc2(z);
-myfunc2(3);
