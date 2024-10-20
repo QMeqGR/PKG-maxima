@@ -1,15 +1,15 @@
 
-(display2d:false,load(PKG),0);
+(display2d:false,load(PKG),0) ;
 0 $
 
-myfunc(1);
+myfunc(1) ;
 cos(1) $
 
-myfunc(2);
+myfunc(2) ;
 cos(2) $
 
-myfunc2(z);
+myfunc2(z) ;
 sin(z) $
 
-myfunc2(3);
-sin(3) 
+myfunc2(3) ;
+sin(3)  $
